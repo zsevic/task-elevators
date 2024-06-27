@@ -23,6 +23,21 @@ class Elevator {
         this.status = STATUS.idle;
       }
     }
+
+    if (this.stops.size === 0) {
+      this.direction = DIRECTION.idle;
+      this.status = STATUS.idle;
+    } else if (
+      this.direction === DIRECTION.up &&
+      Math.max(...this.stops) < this.currentFloor
+    ) {
+      this.direction = DIRECTION.down;
+    } else if (
+      this.direction === DIRECTION.down &&
+      Math.min(...this.stops) > this.currentFloor
+    ) {
+      this.direction = DIRECTION.up;
+    }
   }
 
   addStop(floor) {

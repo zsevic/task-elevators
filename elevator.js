@@ -6,7 +6,7 @@ class Elevator {
     this.currentFloor = 0;
     this.direction = DIRECTION.idle;
     this.status = STATUS.idle;
-    this.stops = [];
+    this.stops = new Set();
   }
 
   move() {
@@ -16,9 +16,9 @@ class Elevator {
       this.currentFloor--;
     }
 
-    if (this.stops.includes(this.currentFloor)) {
-      this.stops = this.stops.filter((floor) => floor !== this.currentFloor);
-      if (this.stops.length === 0) {
+    if (this.stops.has(this.currentFloor)) {
+      this.stops.delete(this.currentFloor);
+      if (this.stops.size === 0) {
         this.direction = DIRECTION.idle;
         this.status = STATUS.idle;
       }
@@ -26,7 +26,7 @@ class Elevator {
   }
 
   addStop(floor) {
-    this.stops.push(floor);
+    this.stops.add(floor);
     if (this.currentFloor < floor) {
       this.direction = DIRECTION.up;
       this.status = STATUS.moving;
@@ -37,7 +37,7 @@ class Elevator {
   }
 
   updateStatus() {
-    if (this.stops.length === 0) {
+    if (this.stops.size === 0) {
       this.status = STATUS.idle;
       this.direction = DIRECTION.idle;
     } else {

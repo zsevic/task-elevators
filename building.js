@@ -56,7 +56,7 @@ class Building {
       console.log(
         `Elevator ${elevator.id}: Floor ${elevator.currentFloor}, Direction ${
           elevator.direction
-        }, Status ${elevator.status}, Stops: ${elevator.stops.join(', ')}`
+        }, Status ${elevator.status}, Stops: ${[...elevator.stops].join(', ')}`
       );
     });
   }

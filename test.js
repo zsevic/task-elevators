@@ -18,7 +18,7 @@ describe('Elevator System', function () {
 
     const elevator = building.callElevator(3, 7);
 
-    assert.equal(elevator.stops.includes(3), true);
-    assert.equal(elevator.stops.includes(7), true);
+    assert.equal(elevator.stops.has(3), true);
+    assert.equal(elevator.stops.has(7), true);
   });
 });

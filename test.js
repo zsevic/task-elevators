@@ -7,8 +7,6 @@ describe('Elevator System', function () {
   it('should initialize elevators on the ground floor', function () {
     const building = new Building(3, 10);
 
-    building.initializeElevators();
-
     building.elevators.forEach((elevator) => {
       assert.equal(elevator.currentFloor, 0);
       assert.equal(elevator.status, STATUS.idle);
@@ -17,7 +15,6 @@ describe('Elevator System', function () {
 
   it('should assign the nearest idle elevator', function () {
     const building = new Building(3, 10);
-    building.initializeElevators();
 
     const elevator = building.callElevator(3, 7);
 

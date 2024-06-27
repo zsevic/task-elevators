@@ -45,15 +45,6 @@ class Building {
     return bestElevator;
   }
 
-  initializeElevators() {
-    this.elevators.forEach((elevator) => {
-      elevator.currentFloor = 0;
-      elevator.direction = DIRECTION.idle;
-      elevator.status = STATUS.idle;
-      elevator.stops = [];
-    });
-  }
-
   randomPassenger() {
     const requestFloor = Math.floor(Math.random() * this.numFloors);
     const targetFloor = Math.floor(Math.random() * this.numFloors);

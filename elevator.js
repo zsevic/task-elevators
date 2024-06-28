@@ -16,25 +16,46 @@ class Elevator {
       this.currentFloor--;
     }
 
-    const stopRequests = this.requests.filter(
-      (request) => request.destination === this.currentFloor
+    const originRequests = this.requests.filter(
+      (request) => request.origin === this.currentFloor
     );
-    if (stopRequests.length > 0) {
-      this.requests = this.requests.filter(
-        (request) => request.destination !== this.currentFloor
-      );
-      if (this.requests.length === 0) {
-        this.direction = DIRECTION.idle;
-        this.status = STATUS.idle;
-      }
+    if (originRequests.length > 0) {
+      originRequests.forEach((request) => (request.origin = null));
     }
 
-    if (this.requests.length > 0) {
-      const nextRequest = this.requests[0];
-      if (this.currentFloor < nextRequest.destination) {
-        this.direction = DIRECTION.up;
-      } else if (this.currentFloor > nextRequest.destination) {
-        this.direction = DIRECTION.down;
+    const destinationRequests = this.requests.filter(
+      (request) =>
+        request.destination === this.currentFloor && request.origin === null
+    );
+    if (destinationRequests.length > 0) {
+      this.requests = this.requests.filter(
+        (request) =>
+          !(
+            request.destination === this.currentFloor && request.origin === null
+          )
+      );
+    }
+
+    if (this.requests.length === 0) {
+      this.direction = DIRECTION.idle;
+      this.status = STATUS.idle;
+    } else {
+      const nextRequest =
+        this.requests.find((request) => request.origin !== null) ||
+        this.requests[0];
+
+      if (nextRequest && nextRequest.origin !== null) {
+        if (this.currentFloor < nextRequest.origin) {
+          this.direction = DIRECTION.up;
+        } else if (this.currentFloor > nextRequest.origin) {
+          this.direction = DIRECTION.down;
+        }
+      } else if (nextRequest) {
+        if (this.currentFloor < nextRequest.destination) {
+          this.direction = DIRECTION.up;
+        } else if (this.currentFloor > nextRequest.destination) {
+          this.direction = DIRECTION.down;
+        }
       }
     }
   }

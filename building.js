@@ -10,25 +10,25 @@ class Building {
     this.numFloors = numFloors;
   }
 
-  callElevator(requestFloor, targetFloor) {
+  callElevator(originFloor, destinationFloor) {
     let bestElevator = null;
     let minDistance = this.numFloors + 1;
 
     for (const elevator of this.elevators) {
-      const distance = Math.abs(elevator.currentFloor - requestFloor);
+      const distance = Math.abs(elevator.currentFloor - originFloor);
       if (elevator.status === STATUS.idle && distance < minDistance) {
         bestElevator = elevator;
         minDistance = distance;
       } else if (
         elevator.direction === DIRECTION.up &&
-        requestFloor >= elevator.currentFloor &&
+        originFloor >= elevator.currentFloor &&
         distance < minDistance
       ) {
         bestElevator = elevator;
         minDistance = distance;
       } else if (
         elevator.direction === DIRECTION.down &&
-        requestFloor <= elevator.currentFloor &&
+        originFloor <= elevator.currentFloor &&
         distance < minDistance
       ) {
         bestElevator = elevator;
@@ -37,7 +37,7 @@ class Building {
     }
 
     if (bestElevator) {
-      bestElevator.addStop(requestFloor, targetFloor);
+      bestElevator.addStop(originFloor, destinationFloor);
       bestElevator.updateStatus();
     }
 
@@ -45,16 +45,16 @@ class Building {
   }
 
   randomPassenger() {
-    const requestFloor = Math.floor(Math.random() * this.numFloors);
-    let targetFloor;
+    const originFloor = Math.floor(Math.random() * this.numFloors);
+    let destinationFloor;
     // get different value compared to origin floor
     do {
-      targetFloor = Math.floor(Math.random() * this.numFloors);
-    } while (targetFloor === requestFloor);
+      destinationFloor = Math.floor(Math.random() * this.numFloors);
+    } while (destinationFloor === originFloor);
     console.log(
-      `Adding passenger with request floor: ${requestFloor} and target floor: ${targetFloor}`
+      `Adding passenger with origin floor: ${originFloor} and destination floor: ${destinationFloor}`
     );
-    this.callElevator(requestFloor, targetFloor);
+    this.callElevator(originFloor, destinationFloor);
   }
 
   displayStatus() {

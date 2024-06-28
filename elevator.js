@@ -17,7 +17,8 @@ class Elevator {
     }
 
     const originRequests = this.requests.filter(
-      (request) => request.origin === this.currentFloor
+      (request) =>
+        request.origin === this.currentFloor && !request.originVisited
     );
     if (originRequests.length > 0) {
       originRequests.forEach((request) => (request.originVisited = true));
@@ -59,7 +60,7 @@ class Elevator {
   }
 
   addStop(origin, destination) {
-    this.requests.push({ origin, destination });
+    this.requests.push({ origin, destination, originVisited: false });
 
     if (this.status === STATUS.idle) {
       if (this.currentFloor < origin) {

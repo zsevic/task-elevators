@@ -18,7 +18,7 @@ cd task-elevators
 Run the following command for unit tests
 
 ```bash
-node test.js
+npm test
 ```
 
 #### Simulation

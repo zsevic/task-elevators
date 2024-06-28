@@ -1,0 +1,8 @@
+{
+  "name": "task-elevators",
+  "version": "1.0.0",
+  "scripts": {
+    "simulation": "node src/simulation.js",
+    "test": "node tests/index.test.js"
+  }
+}

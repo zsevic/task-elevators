@@ -26,64 +26,35 @@ describe('Elevator System', function () {
     );
   });
 
-  it('should handle multiple requests correctly with multiple elevators', () => {
+  it('should handle multiple requests correctly with multiple elevators', function () {
     const building = new Building(3, 10);
 
-    const elevator1 = building.callElevator(1, 5);
-    const elevator2 = building.callElevator(2, 6);
-    const elevator3 = building.callElevator(3, 7);
+    let elevator1 = building.callElevator(1, 5);
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 5; i++) {
       building.elevators.forEach((elevator) => elevator.move());
     }
 
-    building.elevators.forEach((elevator) => {
-      if (elevator === elevator1) {
-        assert.equal(
-          elevator.requests.some(
-            (req) => req.origin === 1 && req.destination === 5
-          ),
-          false
-        );
-      } else if (elevator === elevator2) {
-        assert.equal(
-          elevator.requests.some(
-            (req) => req.origin === 2 && req.destination === 6
-          ),
-          false
-        );
-      } else if (elevator === elevator3) {
-        assert.equal(
-          elevator.requests.some(
-            (req) => req.origin === 3 && req.destination === 7
-          ),
-          false
-        );
-      }
-    });
+    assert.equal(elevator1.currentFloor, 5);
+    assert.equal(elevator1.status, STATUS.moving);
 
-    building.callElevator(4, 2);
-    building.callElevator(5, 3);
+    const elevator2 = building.callElevator(2, 9);
+    elevator1 = building.callElevator(6, 3);
 
-    for (let i = 0; i < 10; i++) {
+    for (let i = 0; i < 7; i++) {
       building.elevators.forEach((elevator) => elevator.move());
     }
 
-    assert.equal(
-      building.elevators.some((elevator) =>
-        elevator.requests.some(
-          (req) => req.origin === 4 && req.destination === 2
-        )
-      ),
-      false
-    );
-    assert.equal(
-      building.elevators.some((elevator) =>
-        elevator.requests.some(
-          (req) => req.origin === 5 && req.destination === 3
-        )
-      ),
-      false
-    );
+    const elevator3 = building.callElevator(1, 3);
+    for (let i = 0; i < 7; i++) {
+      building.elevators.forEach((elevator) => elevator.move());
+    }
+
+    assert.equal(elevator1.currentFloor, 3);
+    assert.equal(elevator1.status, STATUS.idle);
+    assert.equal(elevator2.currentFloor, 9);
+    assert.equal(elevator2.status, STATUS.idle);
+    assert.equal(elevator3.currentFloor, 3);
+    assert.equal(elevator3.status, STATUS.idle);
   });
 });

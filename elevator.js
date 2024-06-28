@@ -6,7 +6,7 @@ class Elevator {
     this.currentFloor = 0;
     this.direction = DIRECTION.idle;
     this.status = STATUS.idle;
-    this.stops = new Set();
+    this.requests = [];
   }
 
   move() {
@@ -16,43 +16,50 @@ class Elevator {
       this.currentFloor--;
     }
 
-    if (this.stops.has(this.currentFloor)) {
-      this.stops.delete(this.currentFloor);
-      if (this.stops.size === 0) {
+    const stopRequests = this.requests.filter(
+      (request) => request.destination === this.currentFloor
+    );
+    if (stopRequests.length > 0) {
+      this.requests = this.requests.filter(
+        (request) => request.destination !== this.currentFloor
+      );
+      if (this.requests.length === 0) {
         this.direction = DIRECTION.idle;
         this.status = STATUS.idle;
       }
     }
 
-    if (this.stops.size === 0) {
-      this.direction = DIRECTION.idle;
-      this.status = STATUS.idle;
-    } else if (
-      this.direction === DIRECTION.up &&
-      Math.max(...this.stops) < this.currentFloor
-    ) {
-      this.direction = DIRECTION.down;
-    } else if (
-      this.direction === DIRECTION.down &&
-      Math.min(...this.stops) > this.currentFloor
-    ) {
-      this.direction = DIRECTION.up;
+    if (this.requests.length > 0) {
+      const nextRequest = this.requests[0];
+      if (this.currentFloor < nextRequest.destination) {
+        this.direction = DIRECTION.up;
+      } else if (this.currentFloor > nextRequest.destination) {
+        this.direction = DIRECTION.down;
+      }
     }
   }
 
-  addStop(floor) {
-    this.stops.add(floor);
-    if (this.currentFloor < floor) {
-      this.direction = DIRECTION.up;
-      this.status = STATUS.moving;
-    } else if (this.currentFloor > floor) {
-      this.direction = DIRECTION.down;
+  addStop(origin, destination) {
+    this.requests.push({ origin, destination });
+
+    if (this.status === STATUS.idle) {
+      if (this.currentFloor < origin) {
+        this.direction = DIRECTION.up;
+      } else if (this.currentFloor > origin) {
+        this.direction = DIRECTION.down;
+      } else {
+        if (this.currentFloor < destination) {
+          this.direction = DIRECTION.up;
+        } else if (this.currentFloor > destination) {
+          this.direction = DIRECTION.down;
+        }
+      }
       this.status = STATUS.moving;
     }
   }
 
   updateStatus() {
-    if (this.stops.size === 0) {
+    if (this.requests.length === 0) {
       this.status = STATUS.idle;
       this.direction = DIRECTION.idle;
     } else {

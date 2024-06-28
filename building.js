@@ -3,11 +3,11 @@ const { Elevator } = require('./elevator');
 
 class Building {
   constructor(numElevators, numFloors) {
-    this.elevators = [];
+    this.elevators = Array.from(
+      { length: numElevators },
+      (_, i) => new Elevator(i)
+    );
     this.numFloors = numFloors;
-    for (let i = 0; i < numElevators; i++) {
-      this.elevators.push(new Elevator(i));
-    }
   }
 
   callElevator(requestFloor, targetFloor) {
@@ -37,8 +37,7 @@ class Building {
     }
 
     if (bestElevator) {
-      bestElevator.addStop(requestFloor);
-      bestElevator.addStop(targetFloor);
+      bestElevator.addStop(requestFloor, targetFloor);
       bestElevator.updateStatus();
     }
 
@@ -53,10 +52,12 @@ class Building {
 
   displayStatus() {
     this.elevators.forEach((elevator) => {
+      const requests = elevator.requests
+        .map((request) => `${request.origin}->${request.destination}`)
+        .join(', ');
+
       console.log(
-        `Elevator ${elevator.id}: Floor ${elevator.currentFloor}, Direction ${
-          elevator.direction
-        }, Status ${elevator.status}, Stops: ${[...elevator.stops].join(', ')}`
+        `Elevator ${elevator.id}: Floor ${elevator.currentFloor}, Direction ${elevator.direction}, Status ${elevator.status}, Requests: ${requests}`
       );
     });
   }

@@ -2,6 +2,10 @@ const { STATUS, DIRECTION } = require('./constants');
 const { Elevator } = require('./elevator');
 
 class Building {
+  /**
+   * @param {number} numElevators
+   * @param {number} numFloors
+   */
   constructor(numElevators, numFloors) {
     this.elevators = Array.from(
       { length: numElevators },
@@ -10,6 +14,11 @@ class Building {
     this.numFloors = numFloors;
   }
 
+  /**
+   * @param {number} originFloor
+   * @param {number} destinationFloor
+   * @returns {Elevator}
+   */
   callElevator(originFloor, destinationFloor) {
     let bestElevator = null;
     let minDistance = this.numFloors + 1;

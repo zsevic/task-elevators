@@ -1,6 +1,9 @@
 const { DIRECTION, STATUS } = require('./constants');
 
 class Elevator {
+  /**
+   * @param {number} id
+   */
   constructor(id) {
     this.id = id;
     this.currentFloor = 0;
@@ -58,6 +61,10 @@ class Elevator {
     }
   }
 
+  /**
+   * @param {number} origin
+   * @param {number} destination
+   */
   addStop(origin, destination) {
     this.requests.push({ origin, destination, originVisited: false });
 

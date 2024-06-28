@@ -14,19 +14,26 @@ class Building {
     let bestElevator = null;
     let minDistance = this.numFloors + 1;
 
+    // Iterate through each elevator to find the best one to handle the request
     for (const elevator of this.elevators) {
       const distance = Math.abs(elevator.currentFloor - originFloor);
+
+      // Check if the elevator is idle and closer than the current best
       if (elevator.status === STATUS.idle && distance < minDistance) {
         bestElevator = elevator;
         minDistance = distance;
-      } else if (
+      }
+      // Check if the elevator is moving up and can pick up the passenger on the way
+      else if (
         elevator.direction === DIRECTION.up &&
         originFloor >= elevator.currentFloor &&
         distance < minDistance
       ) {
         bestElevator = elevator;
         minDistance = distance;
-      } else if (
+      }
+      // Check if the elevator is moving down and can pick up the passenger on the way
+      else if (
         elevator.direction === DIRECTION.down &&
         originFloor <= elevator.currentFloor &&
         distance < minDistance
@@ -47,7 +54,7 @@ class Building {
   randomPassenger() {
     const originFloor = Math.floor(Math.random() * this.numFloors);
     let destinationFloor;
-    // get different value compared to origin floor
+    // Get different value compared to origin floor
     do {
       destinationFloor = Math.floor(Math.random() * this.numFloors);
     } while (destinationFloor === originFloor);

@@ -46,7 +46,10 @@ class Building {
 
   randomPassenger() {
     const requestFloor = Math.floor(Math.random() * this.numFloors);
-    const targetFloor = Math.floor(Math.random() * this.numFloors);
+    let targetFloor;
+    do {
+      targetFloor = Math.floor(Math.random() * this.numFloors);
+    } while (targetFloor === requestFloor);
     this.callElevator(requestFloor, targetFloor);
   }
 

@@ -55,29 +55,28 @@ class Elevator {
   addStop(origin, destination) {
     this.requests.push({ origin, destination, originVisited: false });
 
-    if (this.status === STATUS.idle) {
-      if (this.currentFloor < origin) {
-        this.direction = DIRECTION.up;
-      } else if (this.currentFloor > origin) {
-        this.direction = DIRECTION.down;
-      } else {
-        if (this.currentFloor < destination) {
-          this.direction = DIRECTION.up;
-        } else if (this.currentFloor > destination) {
-          this.direction = DIRECTION.down;
-        }
-      }
-      this.status = STATUS.moving;
+    if (this.status !== STATUS.idle) return;
+
+    this.status = STATUS.moving;
+    if (this.currentFloor < origin) {
+      this.direction = DIRECTION.up;
+    } else if (this.currentFloor > origin) {
+      this.direction = DIRECTION.down;
+    } else if (this.currentFloor < destination) {
+      this.direction = DIRECTION.up;
+    } else if (this.currentFloor > destination) {
+      this.direction = DIRECTION.down;
     }
   }
 
   updateStatus() {
-    if (this.requests.length === 0) {
-      this.status = STATUS.idle;
-      this.direction = DIRECTION.idle;
-    } else {
+    if (this.requests.length !== 0) {
       this.status = STATUS.moving;
+      return;
     }
+
+    this.status = STATUS.idle;
+    this.direction = DIRECTION.idle;
   }
 }
 

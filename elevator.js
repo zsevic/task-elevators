@@ -20,19 +20,17 @@ class Elevator {
       (request) => request.origin === this.currentFloor
     );
     if (originRequests.length > 0) {
-      originRequests.forEach((request) => (request.origin = null));
+      originRequests.forEach((request) => (request.originVisited = true));
     }
 
     const destinationRequests = this.requests.filter(
       (request) =>
-        request.destination === this.currentFloor && request.origin === null
+        request.destination === this.currentFloor && request.originVisited
     );
     if (destinationRequests.length > 0) {
       this.requests = this.requests.filter(
         (request) =>
-          !(
-            request.destination === this.currentFloor && request.origin === null
-          )
+          !(request.destination === this.currentFloor && request.originVisited)
       );
     }
 
@@ -41,10 +39,10 @@ class Elevator {
       this.status = STATUS.idle;
     } else {
       const nextRequest =
-        this.requests.find((request) => request.origin !== null) ||
+        this.requests.find((request) => !request.originVisited) ||
         this.requests[0];
 
-      if (nextRequest && nextRequest.origin !== null) {
+      if (nextRequest && !nextRequest.originVisited) {
         if (this.currentFloor < nextRequest.origin) {
           this.direction = DIRECTION.up;
         } else if (this.currentFloor > nextRequest.origin) {

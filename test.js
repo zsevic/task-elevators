@@ -1,8 +1,7 @@
 const assert = require('assert').strict;
 const { describe, it } = require('node:test');
 const { Building } = require('./building');
-const { STATUS, DIRECTION } = require('./constants');
-const { Elevator } = require('./elevator');
+const { STATUS } = require('./constants');
 
 describe('Elevator System', function () {
   it('should initialize elevators on the ground floor', function () {

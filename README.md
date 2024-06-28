@@ -26,5 +26,5 @@ npm test
 Run the following command for simulation with random passengers
 
 ```bash
-node simulation.js
+npm run simulation
 ```

@@ -50,6 +50,9 @@ class Building {
     do {
       targetFloor = Math.floor(Math.random() * this.numFloors);
     } while (targetFloor === requestFloor);
+    console.log(
+      `Adding passenger with request floor: ${requestFloor} and target floor: ${targetFloor}`
+    );
     this.callElevator(requestFloor, targetFloor);
   }
 

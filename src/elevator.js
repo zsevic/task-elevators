@@ -1,5 +1,12 @@
 const { DIRECTION, STATUS } = require('./constants');
 
+/**
+ * @typedef {Object} Request
+ * @property {number} origin - The floor where the passenger starts
+ * @property {number} destination - The floor where the passenger wants to go
+ * @property {boolean} originVisited - Flag indicating if the origin floor has been visited
+ */
+
 class Elevator {
   /**
    * @param {number} id
@@ -9,6 +16,9 @@ class Elevator {
     this.currentFloor = 0;
     this.direction = DIRECTION.idle;
     this.status = STATUS.idle;
+    /**
+     * @type {Request[]}
+     */
     this.requests = [];
   }
 

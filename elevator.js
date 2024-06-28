@@ -10,12 +10,6 @@ class Elevator {
   }
 
   move() {
-    if (this.direction === DIRECTION.up) {
-      this.currentFloor++;
-    } else if (this.direction === DIRECTION.down) {
-      this.currentFloor--;
-    }
-
     const originRequests = this.requests.filter(
       (request) =>
         request.origin === this.currentFloor && !request.originVisited
@@ -39,23 +33,22 @@ class Elevator {
       this.direction = DIRECTION.idle;
       this.status = STATUS.idle;
     } else {
-      const nextRequest =
-        this.requests.find((request) => !request.originVisited) ||
-        this.requests[0];
+      const [nextRequest] = this.requests;
 
-      if (nextRequest && !nextRequest.originVisited) {
-        if (this.currentFloor < nextRequest.origin) {
-          this.direction = DIRECTION.up;
-        } else if (this.currentFloor > nextRequest.origin) {
-          this.direction = DIRECTION.down;
-        }
-      } else if (nextRequest) {
-        if (this.currentFloor < nextRequest.destination) {
-          this.direction = DIRECTION.up;
-        } else if (this.currentFloor > nextRequest.destination) {
-          this.direction = DIRECTION.down;
-        }
+      const targetFloor = !nextRequest.originVisited
+        ? nextRequest.origin
+        : nextRequest.destination;
+      if (this.currentFloor < targetFloor) {
+        this.direction = DIRECTION.up;
+      } else if (this.currentFloor > targetFloor) {
+        this.direction = DIRECTION.down;
       }
+    }
+
+    if (this.direction === DIRECTION.up) {
+      this.currentFloor++;
+    } else if (this.direction === DIRECTION.down) {
+      this.currentFloor--;
     }
   }
 

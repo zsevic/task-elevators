@@ -47,6 +47,7 @@ class Building {
   randomPassenger() {
     const requestFloor = Math.floor(Math.random() * this.numFloors);
     let targetFloor;
+    // get different value compared to request floor
     do {
       targetFloor = Math.floor(Math.random() * this.numFloors);
     } while (targetFloor === requestFloor);
